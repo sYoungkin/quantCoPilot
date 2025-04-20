@@ -6,6 +6,8 @@ from indicators.ema_crossover import ema_crossover, plot_price_with_ema
 FAST_EMA=9
 SLOW_EMA=21
 
+# python main.py --pair EUR/USD --timeframe 1min 
+
 def quantCoPilot(pair="EUR/USD", interval="1min"):
     
     # === 1. Fetch Data ===
@@ -19,7 +21,7 @@ def quantCoPilot(pair="EUR/USD", interval="1min"):
     # === 2. Compute EMA Crossover ===
 
     df = ema_crossover(df, FAST_EMA, SLOW_EMA)
-    #plot_price_with_ema(df)
+    plot_price_with_ema(df)
 
 
     # === 3. Run XGBoost ===

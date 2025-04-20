@@ -1,4 +1,6 @@
 from ta.trend import EMAIndicator
+import matplotlib.pyplot as plt
+import matplotlib.dates as mdates
 
 
 
@@ -10,9 +12,6 @@ def ema_crossover(df, FAST_EMA=9, SLOW_EMA=21):
     df['ema_signal'] = df['ema_cross'].diff().fillna(0)
 
     return df
-
-import matplotlib.pyplot as plt
-import matplotlib.dates as mdates
 
 def plot_price_with_ema(df):
     plt.figure(figsize=(14, 6))
