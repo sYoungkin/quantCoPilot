@@ -1,0 +1,79 @@
+Plan:
+-> build fetch_data.py
+-> build models one by one and test
+-> build main.py with imports and alert logic
+-> need logging
+-> Backtest: we need to run the alert logic on historical data check winrate, PnL
+->
+-> Live: fetch every minute, main on schedul, alert to telegram on BUY/SELL signal
+
+main.py will do:
+-> import data, indicator (ema_crossover), copilot_engine (it executes the ML models ), notify
+-> logic:
+-> import data into df
+-> call ema_crossover and calculate signal
+-> send data into copilot engine
+-> log and alert
+backtest engine does something similar
+-> logic
+-> import data, indicator (ema_crossover), copilot_engine (it executes the ML models )
+-> run trades and calculate metrics
+-> log
+
+### ✅ 1. **XGBoost / LightGBM**
+
+- 🔥 Fast, powerful tree-based models
+- Works great on engineered features
+- Can model **nonlinear interactions** (e.g. RSI + volume spike = breakout)
+- Handles noise better than raw indicators
+
+✅ **Why it’s great for scalping**:
+
+- Picks up tiny edge patterns hidden in short-term candles
+- Handles overlapping signals (price + volatility + volume)
+
+---
+
+### ✅ 2. **Logistic Regression**
+
+- Old school, but interpretable
+- Use it to model binary outcomes: “Is next candle bullish?”
+
+✅ **Use for**:
+
+- Quick signals
+- Confidence scoring
+- Live probability filtering
+
+---
+
+### ✅ 3. **Random Forest**
+
+- Similar to XGBoost but more interpretable
+- Feature importance built in
+- Good for exploring what really matters in your feature set
+
+---
+
+### ✅ 4. **KNN (k-nearest neighbors)**
+
+- Can be surprisingly effective on candle patterns
+- Finds similar past price behaviors and assumes repeatability
+
+✅ **Use for**:
+
+- Classifying current setup based on similar past candles
+- Quick backtestable pattern matching
+
+---
+
+### ✅ 5. **LSTM (if you go deeper)**
+
+- Recurrent Neural Net — remembers past candles
+- Great for learning sequence behavior in price + volume
+- Needs more tuning, more data, more time
+
+✅ **Use for**:
+
+- Predicting short-term trend continuation
+- Anticipating momentum shifts
