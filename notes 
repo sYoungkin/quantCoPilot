@@ -1,3 +1,5 @@
+python fetch_data.py --pair EUR/USD --timeframe 1min --limit 500
+
 Plan:
 -> build fetch_data.py
 -> build models one by one and test

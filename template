@@ -1,0 +1,64 @@
+# 🚀 EMA Crossover + ML Alert System (Telegram Ready)
+
+import pandas as pd
+import numpy as np
+import requests
+import xgboost as xgb
+from ta.trend import EMAIndicator
+from sklearn.preprocessing import StandardScaler
+from datetime import datetime
+
+# === CONFIG ===
+TELEGRAM_TOKEN = "your_bot_token_here"
+TELEGRAM_CHAT_ID = "your_chat_id_here"
+DATA_PATH = "ohlcv.csv"  # Update with your real-time feed or API logic
+MODEL_PATH = "xgboost_model.json"  # Pre-trained model
+FAST_EMA = 9
+SLOW_EMA = 21
+
+# === 1. Fetch Data ===
+df = pd.read_csv(DATA_PATH)
+df['datetime'] = pd.to_datetime(df['datetime'])
+df = df.sort_values('datetime')
+
+# === 2. Compute EMA Crossover ===
+df['ema_fast'] = EMAIndicator(df['Close'], window=FAST_EMA).ema_indicator()
+df['ema_slow'] = EMAIndicator(df['Close'], window=SLOW_EMA).ema_indicator()
+df['ema_cross'] = (df['ema_fast'] > df['ema_slow']).astype(int)
+df['ema_signal'] = df['ema_cross'].diff().fillna(0)
+
+# === 3. Check for Crossover Event ===
+if df['ema_signal'].iloc[-1] == 1:
+    print("Bullish EMA Crossover Detected")
+
+    # === 4. Load Pretrained XGBoost Model ===
+    model = xgb.XGBClassifier()
+    model.load_model(MODEL_PATH)
+
+    # === 5. Feature Engineering ===
+    df['return_1'] = df['Close'].pct_change()
+    df['volatility'] = df['Close'].rolling(5).std()
+    df['rsi'] = df['Close'].rolling(14).apply(lambda x: 100 - 100 / (1 + (x.diff().clip(lower=0).mean() / abs(x.diff().clip(upper=0)).mean())) if len(x.dropna()) == 14 else np.nan)
+    df = df.dropna()
+
+    latest = df.iloc[-1:]
+    features = ['return_1', 'volatility', 'rsi']
+    X = latest[features]
+    X = X.fillna(0)
+    X = StandardScaler().fit_transform(X)  # Match training scale if needed
+
+    # === 6. Predict Signal ===
+    prob = model.predict_proba(X)[0][1]  # Prob of class '1' = price up
+    prediction = model.predict(X)[0]
+
+    # === 7. Send Telegram Alert ===
+    message = f"\n📈 EMA 9/21 Crossover Signal Detected\n\n"
+    message += f"🧠 XGBoost Prediction: {'BUY' if prediction == 1 else 'HOLD/SELL'}\n"
+    message += f"Confidence: {round(prob * 100, 2)}%\n"
+    message += f"Time: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n"
+
+    requests.get(f"https://api.telegram.org/bot{TELEGRAM_TOKEN}/sendMessage",
+                 params={"chat_id": TELEGRAM_CHAT_ID, "text": message})
+
+else:
+    print("No crossover. No alert.")
