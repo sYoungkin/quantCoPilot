@@ -19,9 +19,25 @@ def quantCoPilot(pair="EUR/USD", interval="1min"):
     # === 2. Compute EMA Crossover ===
 
     df = ema_crossover(df, FAST_EMA, SLOW_EMA)
-    print(df)
-
     #plot_price_with_ema(df)
+
+
+    # === 3. Run XGBoost ===
+
+
+    # === 4. Run Regression ===
+
+
+    # === 5. Run KNN ===
+
+
+    # === 6. Run Random Forest ===
+
+
+    # === 5. Run SVM ===
+
+
+
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Run QuantCoPilot')
