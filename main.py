@@ -10,7 +10,7 @@ SLOW_EMA=21
 
 
 
-def quantCoPilot(pair="EUR/USD", interval="1min"):
+def quantCoPilot(pair="EURUSD", interval="1min"):
     
     # === 1. Onboard Data ===
 
@@ -22,6 +22,7 @@ def quantCoPilot(pair="EUR/USD", interval="1min"):
     ema_crossover(df, FAST_EMA, SLOW_EMA)
     plot_price_with_ema(df)
 
+    
     # === 3. Run coPilot Engine ===
     # run_models
 
@@ -36,8 +37,8 @@ def quantCoPilot(pair="EUR/USD", interval="1min"):
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Run QuantCoPilot')
-    parser.add_argument('--pair', type=str, default='EUR/USD ', help='e.g. BTC/USD, ETH/USD')
-    parser.add_argument('--timeframe', type=str, default='1min', help='e.g. 1min, 5min, 1h, 1day')
+    parser.add_argument('--pair', type=str, default='EURUSD ', help='e.g. BTCUSD, ETHUSD')
+    parser.add_argument('--timeframe', type=str, default='1m', help='e.g. 1m, 5m, 1h, 1d')
     args = parser.parse_args()
 
     #fetch_data(pair=args.pair, interval=args.timeframe, limit=1000)
