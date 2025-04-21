@@ -1,6 +1,8 @@
 python data/fetch_data.py --pair EURUSD --timeframe 1m --period 1d
 python main.py --pair EURUSD --timeframe 1m
 
+python models/train_model.py --pair EURUSD --timeframe 1m
+
 Plan:
 -> build fetch_data.py
 -> build models one by one and test

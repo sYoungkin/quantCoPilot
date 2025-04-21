@@ -1,10 +1,9 @@
 import pandas as pd
 import argparse
 from indicators.ema_crossover import ema_crossover
-from data.fetch_data import fetch_data
 from data.data_onboarding import onboard_data
-from copilot.copilot_engine import run_models
-from viz.plot_signals import plot_price_with_signals
+from copilot.copilot_engine import train_models
+#from viz.plot_signals import plot_price_with_signals
 
 
 FAST_EMA=9
@@ -12,7 +11,7 @@ SLOW_EMA=21
 
 
 
-def quantCoPilot(pair="EURUSD", interval="1min"):
+def quantCoPilotTrainer(pair="EURUSD", interval="1min"):
     
     # === 1. Onboard Data ===
 
@@ -26,18 +25,7 @@ def quantCoPilot(pair="EURUSD", interval="1min"):
 
     
     # === 3. Run coPilot Engine ===
-    df = run_models(df)
-
-    #plot_price_with_signals(df)
-
-    
-
-
-    # === 4. Analyze Results  ===
-
-
-    # === 5. Notify ===
-
+    df = train_models(df)
 
 
 
@@ -49,4 +37,4 @@ if __name__ == '__main__':
 
     #fetch_data(pair=args.pair, interval=args.timeframe, limit=1000)
 
-    quantCoPilot(pair=args.pair, interval=args.timeframe)
+    quantCoPilotTrainer(pair=args.pair, interval=args.timeframe)

@@ -1,5 +1,5 @@
-from models.xgboost import run_xgboost
 from models.feature_engineering import generate_features
+from models.xgboost import train_xgboost
 
 def run_models(df):
 
@@ -9,12 +9,40 @@ def run_models(df):
     print("[🔧 Generating Features]")
     df = generate_features(df)
 
-#------ df copies
-
     # === Run XGBoost ===
     print("[🔧 Running XGBoost]")
-    print("[🔍 Columns in DataFrame]:", df.columns.tolist())
-    df = run_xgboost(df)
+   
+
+    df = train_xgboost(df)
+
+    # === Run Regression ===
+
+
+    # === Run KNN ===
+
+
+    # === Run Random Forest ===
+
+
+    # === Run SVM ===
+
+    return df
+
+
+
+def train_models(df):
+
+    print("[🔧 Starting CoPilot Engine: Training Model]")
+
+    # === Feature Engineering ===
+    print("[🔧 Generating Features]")
+    df = generate_features(df)
+
+    # === Run XGBoost ===
+    print("[🔧 Training XGBoost]")
+    #df = apply_xgboost_model(df)
+
+    df = train_xgboost(df)
 
     # === Run Regression ===
 
