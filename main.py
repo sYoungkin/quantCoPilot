@@ -1,50 +1,45 @@
 import pandas as pd
-from datetime import datetime
 import argparse
 from indicators.ema_crossover import ema_crossover, plot_price_with_ema
+from data.fetch_data import fetch_data
+from data.data_onboarding import onboard_data
+
 
 FAST_EMA=9
 SLOW_EMA=21
 
-# python main.py --pair EUR/USD --timeframe 1min 
+
 
 def quantCoPilot(pair="EUR/USD", interval="1min"):
     
-    # === 1. Fetch Data ===
+    # === 1. Onboard Data ===
 
-    symbol = pair.replace("/", "")
-    DATA_PATH = f"data/{symbol}_{interval}.csv"
-    df = pd.read_csv(DATA_PATH)
-    df['timestamp'] = pd.to_datetime(df['timestamp'])
-    df = df.sort_values('timestamp')
+    df = onboard_data(pair, interval)
+
 
     # === 2. Compute EMA Crossover ===
 
-    df = ema_crossover(df, FAST_EMA, SLOW_EMA)
+    ema_crossover(df, FAST_EMA, SLOW_EMA)
     plot_price_with_ema(df)
 
-
-    # === 3. Run XGBoost ===
-
-
-    # === 4. Run Regression ===
+    # === 3. Run coPilot Engine ===
+    # run_models
 
 
-    # === 5. Run KNN ===
+    # === 4. Analyze Results  ===
 
 
-    # === 6. Run Random Forest ===
-
-
-    # === 5. Run SVM ===
+    # === 5. Notify ===
 
 
 
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Run QuantCoPilot')
-    parser.add_argument('--pair', type=str, default='BTC/USD', help='e.g. BTC/USD, ETH/USD')
+    parser.add_argument('--pair', type=str, default='EUR/USD ', help='e.g. BTC/USD, ETH/USD')
     parser.add_argument('--timeframe', type=str, default='1min', help='e.g. 1min, 5min, 1h, 1day')
     args = parser.parse_args()
+
+    #fetch_data(pair=args.pair, interval=args.timeframe, limit=1000)
 
     quantCoPilot(pair=args.pair, interval=args.timeframe)

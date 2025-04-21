@@ -1,4 +1,5 @@
-python fetch_data.py --pair EUR/USD --timeframe 1min --limit 500
+python data/fetch_data.py --pair EUR/USD --timeframe 1min --limit 1000
+python main.py --pair EUR/USD --timeframe 1min
 
 Plan:
 -> build fetch_data.py

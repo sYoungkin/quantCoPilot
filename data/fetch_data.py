@@ -51,7 +51,7 @@ def fetch_data(pair="EUR/USD", interval="1min", limit=100):
 # === Example Usage with Arguments ===
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Fetch Twelve Data OHLCV data and save as CSV.')
-    parser.add_argument('--pair', type=str, default='BTC/USD', help='e.g. BTC/USD, ETH/USD')
+    parser.add_argument('--pair', type=str, default='EUR/USD', help='e.g. BTC/USD, ETH/USD')
     parser.add_argument('--timeframe', type=str, default='1min', help='e.g. 1min, 5min, 1h, 1day')
     parser.add_argument('--limit', type=int, default=100, help='Number of candles to fetch')
     args = parser.parse_args()
