@@ -1,18 +1,18 @@
 # models/xgboost_model.py
 from xgboost import XGBClassifier
-from sklearn.model_selection import train_test_split
+from sklearn.model_selection import train_test_split, GridSearchCV
 from sklearn.metrics import classification_report
-from feature_engineering import generate_features
-from sklearn.model_selection import GridSearchCV, train_test_split
+
+
 
 def run_xgboost(df):
-    df = generate_features(df)
-    df['target'] = (df['close'].shift(-3) > df['close']).astype(int)
+    
+    df['xgboost_target'] = (df['close'].shift(-3) > df['close']).astype(int)
     df = df.dropna()
 
     features = ['return_1', 'return_3', 'macd', 'rsi', 'boll_upper', 'boll_lower']
     X = df[features]
-    y = df['target']
+    y = df['xgboost_target']
 
     X_train, X_test, y_train, y_test = train_test_split(X, y, shuffle=False)
 
@@ -27,19 +27,15 @@ def run_xgboost(df):
     }
 
     # === Run Grid Search ===
-    model = XGBClassifier(use_label_encoder=False, eval_metric='logloss')
-    grid = GridSearchCV(model, param_grid, cv=3, scoring='f1', verbose=1)
+    model = XGBClassifier(eval_metric='logloss')
+    grid = GridSearchCV(model, param_grid, cv=3, scoring='f1', verbose=1, n_jobs=-1)
     grid.fit(X_train, y_train)
 
-    # === Print Results ===
+    # === Evaluation ===
     print("\n[Best Parameters]")
     print(grid.best_params_)
 
-    preds = model.predict(X_test)
     print("\n[🔍 XGBoost Results]")
-    print(classification_report(y_test, preds))
-
-    print("\n[Evaluation on Test Set]")
     y_pred = grid.best_estimator_.predict(X_test)
     print(classification_report(y_test, y_pred))
 

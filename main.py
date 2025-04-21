@@ -1,8 +1,10 @@
 import pandas as pd
 import argparse
-from indicators.ema_crossover import ema_crossover, plot_price_with_ema
+from indicators.ema_crossover import ema_crossover
 from data.fetch_data import fetch_data
 from data.data_onboarding import onboard_data
+from copilot.copilot_engine import run_models
+from viz.plot_signals import plot_price_with_signals
 
 
 FAST_EMA=9
@@ -19,12 +21,17 @@ def quantCoPilot(pair="EURUSD", interval="1min"):
 
     # === 2. Compute EMA Crossover ===
 
-    ema_crossover(df, FAST_EMA, SLOW_EMA)
-    plot_price_with_ema(df)
+    df = ema_crossover(df, FAST_EMA, SLOW_EMA)
+    #plot_price_with_ema(df)
 
     
     # === 3. Run coPilot Engine ===
-    # run_models
+    df = run_models(df)
+    print(df.head())
+
+    plot_price_with_signals(df)
+
+    
 
 
     # === 4. Analyze Results  ===

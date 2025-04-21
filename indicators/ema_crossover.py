@@ -13,38 +13,38 @@ def ema_crossover(df, FAST_EMA=9, SLOW_EMA=21):
 
     return df
 
-def plot_price_with_ema(df):
-    fig, ax = plt.subplots(figsize=(14, 6))
-    ax.set_facecolor("#ddd")  # Optional: light grey background
+# def plot_price_with_ema(df):
+#     fig, ax = plt.subplots(figsize=(14, 6))
+#     ax.set_facecolor("#ddd")  # Optional: light grey background
 
-    # Price and EMAs
-    ax.plot(df['timestamp'], df['close'], label='Price', color='black', linewidth=1)
-    ax.plot(df['timestamp'], df['ema_fast'], label='EMA Fast', color='red', linestyle='--')
-    ax.plot(df['timestamp'], df['ema_slow'], label='EMA Slow', color='blue', linestyle='--')
+#     # Price and EMAs
+#     ax.plot(df['timestamp'], df['close'], label='Price', color='black', linewidth=1)
+#     ax.plot(df['timestamp'], df['ema_fast'], label='EMA Fast', color='red', linestyle='--')
+#     ax.plot(df['timestamp'], df['ema_slow'], label='EMA Slow', color='blue', linestyle='--')
 
-    # Crossover markers
-    bullish_cross = df[df['ema_signal'] == 1]
-    bearish_cross = df[df['ema_signal'] == -1]
+#     # Crossover markers
+#     bullish_cross = df[df['ema_signal'] == 1]
+#     bearish_cross = df[df['ema_signal'] == -1]
 
-    ax.scatter(bullish_cross['timestamp'], bullish_cross['close'],
-               marker='^', color='green', label='Bullish Cross', zorder=5)
+#     ax.scatter(bullish_cross['timestamp'], bullish_cross['close'],
+#                marker='^', color='green', label='Bullish Cross', zorder=5)
 
-    ax.scatter(bearish_cross['timestamp'], bearish_cross['close'],
-               marker='v', color='red', label='Bearish Cross', zorder=5)
+#     ax.scatter(bearish_cross['timestamp'], bearish_cross['close'],
+#                marker='v', color='red', label='Bearish Cross', zorder=5)
 
-    # Fix datetime axis
-    locator = mdates.AutoDateLocator()
-    formatter = mdates.DateFormatter('%Y-%m-%d %H:%M')
-    ax.xaxis.set_major_locator(locator)
-    ax.xaxis.set_major_formatter(formatter)
+#     # Fix datetime axis
+#     locator = mdates.AutoDateLocator()
+#     formatter = mdates.DateFormatter('%Y-%m-%d %H:%M')
+#     ax.xaxis.set_major_locator(locator)
+#     ax.xaxis.set_major_formatter(formatter)
 
-    # Styling
-    ax.set_title("Price with EMA Crossovers")
-    ax.set_xlabel("Time")
-    ax.set_ylabel("Price")
-    ax.legend()
-    ax.grid(True)
+#     # Styling
+#     ax.set_title("Price with EMA Crossovers")
+#     ax.set_xlabel("Time")
+#     ax.set_ylabel("Price")
+#     ax.legend()
+#     ax.grid(True)
 
-    fig.autofmt_xdate()  # Auto-rotate dates for readability
-    fig.tight_layout()
-    plt.show()
+#     fig.autofmt_xdate()  # Auto-rotate dates for readability
+#     fig.tight_layout()
+#     plt.show()
