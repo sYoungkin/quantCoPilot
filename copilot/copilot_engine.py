@@ -13,7 +13,7 @@ def run_models(df):
     print("[🔧 Running XGBoost]")
    
 
-    df = train_xgboost(df)
+    #df = train_xgboost(df)
 
     # === Run Regression ===
 
